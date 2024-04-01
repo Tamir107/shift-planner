@@ -23,7 +23,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress2"
+            android:id="@+id/editTextEmailSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -48,7 +48,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/editTextEmployeeIDSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -73,16 +73,16 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editTextTextPassword2"
+            android:id="@+id/editTextPasswordSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword"
-            android:hint="Your password"/>
+            android:hint="Your password - at least 6 characters"
+            android:inputType="textPassword" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"

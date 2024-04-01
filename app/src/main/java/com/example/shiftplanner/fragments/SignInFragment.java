@@ -1,14 +1,25 @@
 package com.example.shiftplanner.fragments;
 
+import static com.example.shiftplanner.fragments.SignUpFragment.isValidEmail;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.shiftplanner.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +32,9 @@ public class SignInFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private FirebaseAuth mAuth;
+    private EditText email, password;
+    private Button signInButton;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,6 +75,46 @@ public class SignInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false);
+        View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+
+        email = (EditText) view.findViewById(R.id.editTextEmailSignIn);
+        password = (EditText) view.findViewById(R.id.editTextPasswordSignIn);
+        signInButton = (Button) view.findViewById(R.id.buttonSignIn);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    String emailStr = email.getText().toString();
+                    if(!isValidEmail(emailStr)){
+                        throw new Exception("Invalid email, please enter a valid one");
+                    }
+                    String passwordStr = password.getText().toString();
+
+                    mAuth.signInWithEmailAndPassword(emailStr, passwordStr)
+                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        Toast.makeText(getActivity(), "Login ok.", Toast.LENGTH_SHORT).show();
+                                        // Here I will put code that navigates the logged in user to another fragment (inside the system)
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Toast.makeText(getActivity(), "Login failed.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                } catch (Exception error) {
+                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        return view;
     }
 }
