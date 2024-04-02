@@ -40,7 +40,7 @@ public class SignUpFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private FirebaseAuth mAuth;
-    private EditText email, employeeID, password;
+    private EditText firstName, lastName, email, employeeID, password;
     private Button signUpButton;
 
 
@@ -82,6 +82,8 @@ public class SignUpFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
+        firstName = (EditText) view.findViewById(R.id.editTextFirstNameSignUp);
+        lastName = (EditText) view.findViewById(R.id.editTextLastNameSignUp);
         email = (EditText) view.findViewById(R.id.editTextEmailSignUp);
         password = (EditText) view.findViewById(R.id.editTextPasswordSignUp);
         employeeID = (EditText) view.findViewById(R.id.editTextEmployeeIDSignUp);
@@ -94,9 +96,11 @@ public class SignUpFragment extends Fragment {
             public void onClick(View view) {
                 try {
                     String emailStr = email.getText().toString();
-                    if(!isValidEmail(emailStr)){
+                    if (!isValidEmail(emailStr)) {
                         throw new Exception("Invalid email, please enter a valid one");
                     }
+                    String firstNameStr = firstName.getText().toString();
+                    String lastNameStr = lastName.getText().toString();
                     String employeeIDStr = employeeID.getText().toString();
                     String passwordStr = password.getText().toString();
 
@@ -109,8 +113,8 @@ public class SignUpFragment extends Fragment {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         // Write a message to the database
                                         FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                        DatabaseReference myRef = database.getReference("users").child(employeeIDStr);
-                                        myRef.setValue(new User(emailStr,passwordStr,employeeIDStr));
+                                        DatabaseReference myRef = database.getReference("users").child(user.getUid());
+                                        myRef.setValue(new User(firstNameStr, lastNameStr, employeeIDStr, emailStr, passwordStr));
                                         Toast.makeText(getActivity(), "Register ok.", Toast.LENGTH_SHORT).show();
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -118,8 +122,7 @@ public class SignUpFragment extends Fragment {
                                     }
                                 }
                             });
-                }
-                catch (Exception error){
+                } catch (Exception error) {
                     Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 

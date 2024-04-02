@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,7 +102,9 @@ public class SignInFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         Toast.makeText(getActivity(), "Login ok.", Toast.LENGTH_SHORT).show();
-                                        // Here I will put code that navigates the logged in user to another fragment (inside the system)
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("UID", user.getUid());
+                                        Navigation.findNavController(view).navigate(R.id.action_signInFragment_to_frontPageFragment,bundle);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Toast.makeText(getActivity(), "Login failed.", Toast.LENGTH_SHORT).show();

@@ -3,23 +3,19 @@ package com.example.shiftplanner.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.shiftplanner.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link WelcomeFragment#newInstance} factory method to
+ * Use the {@link MyShiftsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WelcomeFragment extends Fragment {
+public class MyShiftsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,9 +25,8 @@ public class WelcomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Button buttonToSignInPage, buttonToSignUpPage;
 
-    public WelcomeFragment() {
+    public MyShiftsFragment() {
         // Required empty public constructor
     }
 
@@ -41,11 +36,11 @@ public class WelcomeFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment WelcomeFragment.
+     * @return A new instance of fragment MyShiftsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WelcomeFragment newInstance(String param1, String param2) {
-        WelcomeFragment fragment = new WelcomeFragment();
+    public static MyShiftsFragment newInstance(String param1, String param2) {
+        MyShiftsFragment fragment = new MyShiftsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,24 +61,6 @@ public class WelcomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_welcome, container, false);
-
-        buttonToSignInPage = view.findViewById(R.id.buttonToSignInPage);
-        buttonToSignUpPage = view.findViewById(R.id.buttonToSignUpPage);
-
-        buttonToSignInPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_signInFragment);
-            }
-        });
-        buttonToSignUpPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_signUpFragment);
-            }
-        });
-
-        return view;
+        return inflater.inflate(R.layout.fragment_my_shifts, container, false);
     }
 }

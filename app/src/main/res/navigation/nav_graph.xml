@@ -21,10 +21,47 @@
         android:id="@+id/signInFragment"
         android:name="com.example.shiftplanner.fragments.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_frontPageFragment"
+            app:destination="@id/frontPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.example.shiftplanner.fragments.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/frontPageFragment"
+        android:name="com.example.shiftplanner.fragments.FrontPageFragment"
+        android:label="fragment_front_page"
+        tools:layout="@layout/fragment_front_page" >
+        <action
+            android:id="@+id/action_frontPageFragment_to_welcomeFragment2"
+            app:destination="@id/welcomeFragment" />
+        <action
+            android:id="@+id/action_frontPageFragment_to_newShiftFragment"
+            app:destination="@id/newShiftFragment" />
+        <action
+            android:id="@+id/action_frontPageFragment_to_myShiftsFragment"
+            app:destination="@id/myShiftsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newShiftFragment"
+        android:name="com.example.shiftplanner.fragments.NewShiftFragment"
+        android:label="fragment_new_shift"
+        tools:layout="@layout/fragment_new_shift" >
+        <action
+            android:id="@+id/action_newShiftFragment_to_frontPageFragment"
+            app:destination="@id/frontPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myShiftsFragment"
+        android:name="com.example.shiftplanner.fragments.MyShiftsFragment"
+        android:label="fragment_my_shifts"
+        tools:layout="@layout/fragment_my_shifts" >
+        <action
+            android:id="@+id/action_myShiftsFragment_to_frontPageFragment"
+            app:destination="@id/frontPageFragment" />
+    </fragment>
 </navigation>
