@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
     android:orientation="vertical"
+    android:layoutDirection="ltr"
     tools:context=".fragments.FrontPageFragment">
 
     <TextView
@@ -35,11 +36,20 @@
         android:text="My shifts" />
 
     <Button
+        android:id="@+id/buttonToSalary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="30dp"
+        android:text="My salary" />
+
+    <Button
         android:id="@+id/buttonLogOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="140dp"
         android:layout_marginRight="30dp"
         android:text="Log out" />
 

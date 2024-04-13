@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    tools:context=".fragments.SalaryFragment">
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Choose quarter to review:"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <RadioButton
+                android:id="@+id/radioQ1"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Q1"
+                android:textSize="18dp" />
+
+            <RadioButton
+                android:id="@+id/radioQ2"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Q2"
+                android:textSize="18dp" />
+
+            <RadioButton
+                android:id="@+id/radioQ3"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Q3"
+                android:textSize="18dp" />
+
+            <RadioButton
+                android:id="@+id/radioQ4"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Q4"
+                android:textSize="18dp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/buttonShowReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginRight="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="Show Report"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:stretchColumns="*">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp">
+
+            <TextView
+                android:id="@+id/textViewMonth"
+
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text="Month"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewDayShiftNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text="Day shifts"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewNightShiftNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text="Night shifts"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewMonthlySalary"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text="Salary"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewMonth1"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewDayShifts1"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewNightShifts1"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewSalary1"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewMonth2"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewDayShifts2"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewNightShifts2"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewSalary2"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewMonth3"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewDayShifts3"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewNightShifts3"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewSalary3"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:background="@drawable/table_border"
+                android:gravity="center"
+                android:text=""
+                android:textSize="18sp" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

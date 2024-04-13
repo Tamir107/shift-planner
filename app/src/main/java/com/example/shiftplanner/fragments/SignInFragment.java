@@ -16,11 +16,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.shiftplanner.R;
+import com.example.shiftplanner.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,6 +99,24 @@ public class SignInFragment extends Fragment {
                         throw new Exception("Invalid email, please enter a valid one");
                     }
                     String passwordStr = password.getText().toString();
+                    //WORKING
+//                    mAuth.signInWithEmailAndPassword(emailStr, passwordStr)
+//                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<AuthResult> task) {
+//                                    if (task.isSuccessful()) {
+//                                        // Sign in success, update UI with the signed-in user's information
+//                                        FirebaseUser user = mAuth.getCurrentUser();
+//                                        Toast.makeText(getActivity(), "Login ok.", Toast.LENGTH_SHORT).show();
+//                                        Bundle bundle = new Bundle();
+//                                        bundle.putString("UID", user.getUid());
+//                                        Navigation.findNavController(view).navigate(R.id.action_signInFragment_to_frontPageFragment,bundle);
+//                                    } else {
+//                                        // If sign in fails, display a message to the user.
+//                                        Toast.makeText(getActivity(), "Login failed.", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            });
 
                     mAuth.signInWithEmailAndPassword(emailStr, passwordStr)
                             .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -103,21 +127,44 @@ public class SignInFragment extends Fragment {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         Toast.makeText(getActivity(), "Login ok.", Toast.LENGTH_SHORT).show();
                                         Bundle bundle = new Bundle();
-                                        bundle.putString("UID", user.getUid());
-                                        Navigation.findNavController(view).navigate(R.id.action_signInFragment_to_frontPageFragment,bundle);
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        DatabaseReference myRef = database.getReference("users").child(user.getUid());
+                                        myRef.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                User loggedInUser = dataSnapshot.getValue(User.class);
+                                                bundle.putString("UID", user.getUid());
+                                                bundle.putString("firstName", loggedInUser.getFirstName());
+                                                bundle.putString("lastName", loggedInUser.getLastName());
+                                                bundle.putString("employeeID", loggedInUser.getEmployeeID());
+                                                Navigation.findNavController(view).navigate(R.id.action_signInFragment_to_frontPageFragment,bundle);
+                                            }
+                                            @Override
+                                            public void onCancelled(DatabaseError error) {
+                                                // Failed to read value
+                                                Toast.makeText(getActivity(), "Problem occurred while reading data", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Toast.makeText(getActivity(), "Login failed.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
+
+
+
                 } catch (Exception error) {
                     Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
         return view;
     }
 }
+
+
+
+

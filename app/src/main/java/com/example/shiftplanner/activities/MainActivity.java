@@ -1,6 +1,7 @@
 package com.example.shiftplanner.activities;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.shiftplanner.R;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        StrictMode.ThreadPolicy myPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(myPolicy);
+
 
 
     }

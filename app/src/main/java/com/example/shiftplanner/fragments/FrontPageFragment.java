@@ -2,16 +2,21 @@ package com.example.shiftplanner.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.shiftplanner.GoogleCalendarService;
 import com.example.shiftplanner.R;
+import com.example.shiftplanner.UserViewModel;
 import com.example.shiftplanner.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +25,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import androidx.lifecycle.Observer;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +46,8 @@ public class FrontPageFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private TextView welcomeUser;
-    private Button buttonToAddShift, buttonToMyShifts, logOutButton;
+    private Button buttonToAddShift, buttonToMyShifts, buttonToMySalary, logOutButton;
+    private UserViewModel userViewModel;
 
     public FrontPageFragment() {
         // Required empty public constructor
@@ -74,42 +84,67 @@ public class FrontPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_front_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_front_page, container, false);
 
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         welcomeUser = view.findViewById(R.id.textViewWelcomeUser);
         buttonToAddShift = view.findViewById(R.id.buttonToAddNewShift);
         buttonToMyShifts = view.findViewById(R.id.buttonToMyShifts);
         logOutButton = view.findViewById(R.id.buttonLogOut);
+        buttonToMySalary = view.findViewById(R.id.buttonToSalary);
         Bundle bundle = new Bundle();
         String UID = getArguments().getString("UID");
+        String firstName = getArguments().getString("firstName");
+        String lastName = getArguments().getString("lastName");
+        String employeeID = getArguments().getString("employeeID");
+        welcomeUser.setText("Hello," + firstName);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users").child(UID);
+        bundle.putString("UID", UID);
+        bundle.putString("firstName", firstName);
+        bundle.putString("lastName", lastName);
+        bundle.putString("employeeID", employeeID);
 
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                User loggedInUser = dataSnapshot.getValue(User.class);
-                welcomeUser.append(loggedInUser.getFirstName());
-                bundle.putString("UID", UID);
-                bundle.putString("firstName",loggedInUser.getFirstName());
-                bundle.putString("lastName",loggedInUser.getLastName());
-                bundle.putString("employeeID",loggedInUser.getEmployeeID());
-            }
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("users").child(UID);
+//        // Read from the database
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                User loggedInUser = dataSnapshot.getValue(User.class);
+//                welcomeUser.append(loggedInUser.getFirstName());
+//                bundle.putString("UID", UID);
+//                bundle.putString("firstName", loggedInUser.getFirstName());
+//                bundle.putString("lastName", loggedInUser.getLastName());
+//                bundle.putString("employeeID", loggedInUser.getEmployeeID());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//            }
+//        });
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
 
         buttonToAddShift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_frontPageFragment_to_newShiftFragment,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_frontPageFragment_to_newShiftFragment, bundle);
+            }
+        });
+
+        buttonToMyShifts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_frontPageFragment_to_myShiftsFragment, bundle);
+            }
+        });
+
+        buttonToMySalary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_frontPageFragment_to_salaryFragment, bundle);
             }
         });
 

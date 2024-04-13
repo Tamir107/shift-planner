@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_frontPageFragment_to_myShiftsFragment"
             app:destination="@id/myShiftsFragment" />
+        <action
+            android:id="@+id/action_frontPageFragment_to_salaryFragment"
+            app:destination="@id/salaryFragment" />
     </fragment>
     <fragment
         android:id="@+id/newShiftFragment"
@@ -64,4 +67,9 @@
             android:id="@+id/action_myShiftsFragment_to_frontPageFragment"
             app:destination="@id/frontPageFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/salaryFragment"
+        android:name="com.example.shiftplanner.fragments.SalaryFragment"
+        android:label="fragment_salary"
+        tools:layout="@layout/fragment_salary" />
 </navigation>

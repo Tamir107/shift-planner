@@ -5,6 +5,10 @@ public class Shift {
     private String firstName, lastName, employeeID, date, hoursDescription;
     private int hoursID;
 
+    public Shift(){
+
+    }
+
     public Shift(String firstName, String lastName, String employeeID, String date, String hoursDescription, int hoursID) {
         this.firstName = firstName;
         this.lastName = lastName;

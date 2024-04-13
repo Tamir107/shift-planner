@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
     android:orientation="vertical"
+    android:layoutDirection="ltr"
     tools:context=".fragments.NewShiftFragment" >
 
     <TextView
@@ -31,12 +33,29 @@
             android:text="Date:"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/editTextDate"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonChooseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose date"
+                app:icon="@android:drawable/ic_menu_today"
+                app:iconSize="24dp" />
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
