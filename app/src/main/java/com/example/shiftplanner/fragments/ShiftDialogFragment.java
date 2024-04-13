@@ -1,5 +1,6 @@
 package com.example.shiftplanner.fragments;
 
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -13,6 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.shiftplanner.GoogleCalendarService;
@@ -22,6 +27,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +45,9 @@ public class ShiftDialogFragment extends DialogFragment {
     private static final String ARG_PARAM2 = "param2";
     private Shift shift;
     private String UID;
+    private int newHoursID, newDay, newMonth, newYear;
+    private String newHoursDescription;
+    private String summary;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -91,20 +103,43 @@ public class ShiftDialogFragment extends DialogFragment {
                 + "Employee: " + shift.getFirstName() + " " + shift.getLastName();
         textViewShiftDetails.setText(shiftDetails);
 
-        // Set up buttons
-        builder.setView(view)
-                .setPositiveButton("Edit", (dialogInterface, i) -> {
-                    // Handle edit button click
-                    // Implement your edit logic here
-                })
-                .setNegativeButton("Delete", (dialogInterface, i) -> {
-                    // Handle delete button click
-                    // Implement your delete logic here
-                    deleteShiftFromDatabase(shift);
-                    Log.w("Test",shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
-                    GoogleCalendarService.removeEventFromCalendar(getContext(),shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
-                });
+        Button btnEdit = view.findViewById(R.id.btnEdit);
+        Button btnDelete = view.findViewById(R.id.btnDelete);
 
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle edit button click
+                // Implement your edit logic here
+                showEditDialog();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle delete button click
+                // Implement your delete logic here
+                deleteShiftFromDatabase(shift);
+                GoogleCalendarService.removeEventFromCalendar(getContext(), shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
+            }
+        });
+
+//        // Set up buttons
+//        builder.setView(view)
+//                .setPositiveButton("Edit", (dialogInterface, i) -> {
+//                    // Handle edit button click
+//                    // Implement your edit logic here
+//                })
+//                .setNegativeButton("Delete", (dialogInterface, i) -> {
+//                    // Handle delete button click
+//                    // Implement your delete logic here
+//                    deleteShiftFromDatabase(shift);
+//                    Log.w("Test",shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
+//                    GoogleCalendarService.removeEventFromCalendar(getContext(),shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
+//                });
+
+        builder.setView(view);
         return builder.create();
     }
 
@@ -114,6 +149,124 @@ public class ShiftDialogFragment extends DialogFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_shift_dialog, container, false);
     }
+
+    private void showEditDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View editView = inflater.inflate(R.layout.dialog_edit_shift, null);
+        builder.setView(editView);
+
+        // Initialize views in the edit dialog layout
+        DatePicker datePicker = editView.findViewById(R.id.datePicker);
+        RadioGroup radioGroupOptions = editView.findViewById(R.id.radioGroupOptions);
+        RadioButton radioMorning = editView.findViewById(R.id.radioMorning);
+        RadioButton radioEvening = editView.findViewById(R.id.radioEvening);
+        RadioButton radioNight = editView.findViewById(R.id.radioNight);
+        Button btnSubmit = editView.findViewById(R.id.btnSubmit);
+
+        // Pre-fill date picker with existing shift date
+        // Set radio button selection based on existing shift details
+
+        AlertDialog editDialog = builder.create();
+
+        btnSubmit.setOnClickListener(v -> {
+            // Handle submit button click
+
+            if (radioMorning.isChecked()){
+                newHoursID = 0;
+                newHoursDescription = "Morning shift: 7:00 AM - 3:00 PM";
+                summary = shift.getFirstName() + " " + shift.getLastName() + " - Morning";
+            }
+            if (radioEvening.isChecked()){
+                newHoursID = 1;
+                newHoursDescription = "Evening shift: 3:00 PM - 11:00 PM";
+                summary = shift.getFirstName() + " " + shift.getLastName() + " - Evening";
+            }
+            if (radioNight.isChecked()){
+                newHoursID = 2;
+                newHoursDescription = "Night shift: 11:00 PM - 7:00 AM";
+                summary = shift.getFirstName() + " " + shift.getLastName() + " - Night";
+            }
+
+
+
+            String updatedDate = getDateFromDatePicker(datePicker);
+//            getSelectedOptionText(radioGroupOptions.getCheckedRadioButtonId());
+            String formatedDate = updatedDate.replaceAll("[/]","");
+
+            Calendar startCalendar = Calendar.getInstance();
+            Calendar endCalendar = Calendar.getInstance();
+
+            switch (newHoursID){
+                case 0:
+                    startCalendar.set(newYear,newMonth,newDay,7,0,0);
+                    endCalendar.set(newYear,newMonth,newDay,15,0,0);
+                    break;
+                case 1:
+                    startCalendar.set(newYear,newMonth,newDay,15,0,0);
+                    endCalendar.set(newYear,newMonth,newDay,23,0,0);
+                    break;
+                case 2:
+                    startCalendar.set(newYear,newMonth,newDay,23,0,0);
+                    endCalendar.set(newYear,newMonth,newDay+1,7,0,0);
+                    break;
+            }
+
+
+            DatabaseReference myRef;
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            myRef = database.getReference("shifts").child(UID).child(formatedDate);
+
+            //Add the new shift
+            myRef.setValue(new Shift(shift.getFirstName(), shift.getLastName(), shift.getEmployeeID(), updatedDate, newHoursDescription, newHoursID));
+
+            //Delete from calendar here
+//            GoogleCalendarService.removeEventFromCalendar(getContext(), shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
+            //Create the new event calendar here
+//            GoogleCalendarService.addEventToCalendar(getContext(),shift.getEmployeeID() + formatedDate + newHoursID,summary,startCalendar.getTime(),endCalendar.getTime());
+
+            GoogleCalendarService.updateEventFromCalendar(getContext(),shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID(),summary,shift.getEmployeeID() + formatedDate + newHoursID,startCalendar.getTime(),endCalendar.getTime());
+            //Delete the old one
+            deleteShiftFromDatabase(shift);
+
+            editDialog.dismiss();
+        });
+
+        editDialog.show();
+    }
+
+    private String getDateFromDatePicker(DatePicker datePicker) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, datePicker.getYear());
+        calendar.set(Calendar.MONTH, datePicker.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+
+        newDay = datePicker.getDayOfMonth();
+        newMonth = datePicker.getMonth(); // Month is 0-based
+        newYear = datePicker.getYear();
+
+        String dateFormatDisplay = "dd/MM/yyyy"; // Change this if you want a different date format
+        SimpleDateFormat displayFormat = new SimpleDateFormat(dateFormatDisplay, Locale.getDefault());
+        return displayFormat.format(calendar.getTime());
+    }
+
+
+//    private void getSelectedOptionText(int selectedOptionId) {
+//        switch (selectedOptionId) {
+//            case R.id.radioMorning:
+//                newHoursID = 0;
+//                newHoursDescription = "Morning shift: 7:00 AM - 3:00 PM";
+//                break;
+//            case R.id.radioEvening:
+//                newHoursID = 1;
+//                newHoursDescription = "Evening shift: 3:00 PM - 11:00 PM";
+//                break;
+//            case R.id.radioNight:
+//                newHoursID = 2;
+//                newHoursDescription = "Night shift: 11:00 PM - 7:00 AM";
+//                break;
+//        }
+//    }
 
     private void deleteShiftFromDatabase(Shift shift) {
         // Get database reference

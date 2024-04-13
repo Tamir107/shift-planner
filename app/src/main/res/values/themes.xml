@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.ShiftPlanner" parent="Base.Theme.ShiftPlanner" />
+
 </resources>

@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.example.shiftplanner.GoogleCalendarService;
 import com.example.shiftplanner.R;
-import com.example.shiftplanner.UserViewModel;
 import com.example.shiftplanner.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,7 +46,6 @@ public class FrontPageFragment extends Fragment {
     private String mParam2;
     private TextView welcomeUser;
     private Button buttonToAddShift, buttonToMyShifts, buttonToMySalary, logOutButton;
-    private UserViewModel userViewModel;
 
     public FrontPageFragment() {
         // Required empty public constructor
@@ -86,7 +84,6 @@ public class FrontPageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_front_page, container, false);
 
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         welcomeUser = view.findViewById(R.id.textViewWelcomeUser);
         buttonToAddShift = view.findViewById(R.id.buttonToAddNewShift);
         buttonToMyShifts = view.findViewById(R.id.buttonToMyShifts);

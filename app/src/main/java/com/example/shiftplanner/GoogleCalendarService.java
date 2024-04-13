@@ -56,11 +56,6 @@ public class GoogleCalendarService {
         Event event = new Event();
         event.setSummary(summary);
         event.setId(eventID);
-//        event.setId("cita1");
-
-
-
-
 
         DateTime startDateTime = new DateTime(startTime);
         EventDateTime start = new EventDateTime()
@@ -106,6 +101,34 @@ public class GoogleCalendarService {
             Calendar calendarService = getService(context);
             String calendarId = "shiftplanner2@gmail.com"; // Use "primary" for the primary calendar
             calendarService.events().delete(calendarId, eventID).execute();
+            Log.w("myApp","Event removed from calendar successfully");
+        } catch (IOException | GeneralSecurityException e) {
+            Log.w("myApp",e.getMessage().toString());
+        }
+
+    }
+
+    public static void updateEventFromCalendar(Context context,String eventID, String summary, String newEventID, Date startTime, Date endTime) {
+        try {
+            Log.w("myApp","HERE WE GOOOOO");
+            Calendar calendarService = getService(context);
+            String calendarId = "shiftplanner2@gmail.com"; // Use "primary" for the primary calendar
+
+            Event event = new Event();
+            event.setSummary(summary);
+            event.setId(newEventID);
+
+            DateTime startDateTime = new DateTime(startTime);
+            EventDateTime start = new EventDateTime()
+                    .setDateTime(startDateTime);
+            event.setStart(start);
+
+            DateTime endDateTime = new DateTime(endTime);
+            EventDateTime end = new EventDateTime()
+                    .setDateTime(endDateTime);
+            event.setEnd(end);
+
+            calendarService.events().update(calendarId, eventID, event).execute();
             Log.w("myApp","Event removed from calendar successfully");
         } catch (IOException | GeneralSecurityException e) {
             Log.w("myApp",e.getMessage().toString());

@@ -195,11 +195,7 @@ public class NewShiftFragment extends Fragment {
                             break;
                     }
                     Log.w("Test",employeeID + date.getText().toString().replaceAll("[/]","") + hoursID);
-                    //0001120720241
 
-                    //0004100620240
-                    //0004100620240
-                    //0004100620240
                     GoogleCalendarService.addEventToCalendar(getContext(),employeeID + date.getText().toString().replaceAll("[/]","") + hoursID,summary,startCalendar.getTime(),endCalendar.getTime());
 
                     String shiftInfo = String.valueOf(monthV2 + 1);
