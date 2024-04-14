@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/myWhite"
     android:layoutDirection="ltr">
 
     <LinearLayout
@@ -32,6 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textColor="#0d1321"
                     android:text="TextView" />
 
                 <TextView
@@ -41,6 +43,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="TextView"
+                    android:textColor="#0d1321"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -51,6 +54,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="TextView"
+                android:textColor="#0d1321"
                 android:textSize="16sp" />
         </LinearLayout>
 

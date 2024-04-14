@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layoutDirection="ltr"
+    android:background="@color/myWhite"
     android:padding="16dp">
 
     <DatePicker
@@ -24,25 +26,26 @@
             android:id="@+id/radioMorning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Option 1" />
+            android:text="Morning" />
 
         <RadioButton
             android:id="@+id/radioEvening"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Option 2" />
+            android:text="Evening" />
 
         <RadioButton
             android:id="@+id/radioNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Option 3" />
+            android:text="Night" />
     </RadioGroup>
 
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/myGreen"
         android:text="Submit" />
 
 </LinearLayout>

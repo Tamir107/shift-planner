@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@color/myWhite"
     android:orientation="vertical"
     android:layoutDirection="ltr"
     tools:context=".fragments.SignUpFragment" >
@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="First Name:"
+            android:textColor="#0d1321"
             android:textSize="20sp" />
 
         <EditText
@@ -29,6 +30,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="e.g. Avi"
+            android:textColor="#0d1321"
+            android:backgroundTint="#0d1321"
+            android:textColorHint="#6c757d"
             android:inputType="text" />
     </LinearLayout>
 
@@ -45,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Last Name:"
+            android:textColor="#0d1321"
             android:textSize="20sp" />
 
         <EditText
@@ -53,6 +58,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="e.g. Cohen"
+            android:textColor="#0d1321"
+            android:backgroundTint="#0d1321"
+            android:textColorHint="#6c757d"
             android:inputType="text" />
     </LinearLayout>
 
@@ -69,6 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Employee ID:"
+            android:textColor="#0d1321"
             android:textSize="20sp" />
 
         <EditText
@@ -78,6 +87,9 @@
             android:ems="10"
             android:hint="e.g. 1234"
             android:inputType="text"
+            android:textColor="#0d1321"
+            android:backgroundTint="#0d1321"
+            android:textColorHint="#6c757d"
             android:text="" />
     </LinearLayout>
 
@@ -94,6 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Email:"
+            android:textColor="#0d1321"
             android:textSize="20sp" />
 
         <EditText
@@ -102,6 +115,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="e.g. abc@example.com"
+            android:textColor="#0d1321"
+            android:backgroundTint="#0d1321"
+            android:textColorHint="#6c757d"
             android:inputType="textEmailAddress" />
 
     </LinearLayout>
@@ -119,6 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
+            android:textColor="#0d1321"
             android:textSize="20sp" />
 
         <EditText
@@ -127,6 +144,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Your password - at least 6 characters"
+            android:textColor="#0d1321"
+            android:backgroundTint="#0d1321"
+            android:textColorHint="#6c757d"
             android:inputType="textPassword" />
     </LinearLayout>
 
@@ -139,6 +159,8 @@
         android:layout_marginRight="40dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
+        android:textColor="#0d1321"
         android:text="Sign Up"
+        android:background="@drawable/btn_delete_selector"
         android:textSize="20sp" />
 </LinearLayout>

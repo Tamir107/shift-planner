@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/myWhite"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/textViewShiftDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="@android:color/black"
         android:paddingBottom="8dp"/>
 
@@ -26,15 +27,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Edit"
-            android:textColor="@android:color/white"
-            android:background="@drawable/btn_delete_selector"
-            android:layout_marginEnd="8dp"/>
+<!--        <Button-->
+<!--            android:id="@+id/btnEdit"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Edit"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:background="@drawable/btn_delete_selector"-->
+<!--            android:layout_marginEnd="8dp"/>-->
 
         <Button
             android:id="@+id/btnDelete"
@@ -42,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Delete"
-            android:textColor="@android:color/white"
+            android:textColor="#0d1321"
+            android:textSize="22sp"
             android:background="@drawable/btn_delete_selector"
             android:layout_marginStart="8dp"/>
 

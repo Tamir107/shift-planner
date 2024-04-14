@@ -115,9 +115,9 @@ public class SignUpFragment extends Fragment {
                                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                                         DatabaseReference myRef = database.getReference("users").child(user.getUid());
                                         myRef.setValue(new User(firstNameStr, lastNameStr, employeeIDStr, emailStr, passwordStr));
-                                        Toast.makeText(getActivity(), "Register ok.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "You have successfully registered", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        // If sign in fails, display a message to the user.
+                                        // If sign up fails, display a message to the user.
                                         Toast.makeText(getActivity(), "Register failed.", Toast.LENGTH_SHORT).show();
                                     }
                                 }

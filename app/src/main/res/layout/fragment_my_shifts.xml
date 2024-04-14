@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@color/myWhite"
     android:orientation="vertical"
     android:layoutDirection="ltr"
     tools:context=".fragments.MyShiftsFragment" >
@@ -12,13 +12,17 @@
         android:id="@+id/textView11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:gravity="center"
         android:text="My Shifts"
+        android:textColor="#0d1321"
         android:textSize="36sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewShifts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/myWhite"
+        android:paddingTop="12dp" />
 </LinearLayout>

@@ -5,9 +5,9 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
-    android:orientation="vertical"
+    android:background="@color/myWhite"
     android:layoutDirection="ltr"
+    android:orientation="vertical"
     tools:context=".fragments.WelcomeFragment">
 
     <TextView
@@ -17,6 +17,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="ShiftPlanner"
+        android:textColor="#0d1321"
         android:textSize="34sp" />
 
     <LinearLayout
@@ -32,6 +33,9 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="80dp"
             android:layout_marginRight="30dp"
+            android:textColor="#0d1321"
+            android:textSize="18sp"
+            android:background="@drawable/btn_delete_selector"
             android:text="Sign In" />
 
         <Button
@@ -41,6 +45,9 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="30dp"
+            android:textColor="#0d1321"
+            android:textSize="18sp"
+            android:background="@drawable/btn_delete_selector"
             android:text="Sign Up" />
 
     </LinearLayout>

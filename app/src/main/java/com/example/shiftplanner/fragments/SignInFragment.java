@@ -99,25 +99,6 @@ public class SignInFragment extends Fragment {
                         throw new Exception("Invalid email, please enter a valid one");
                     }
                     String passwordStr = password.getText().toString();
-                    //WORKING
-//                    mAuth.signInWithEmailAndPassword(emailStr, passwordStr)
-//                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<AuthResult> task) {
-//                                    if (task.isSuccessful()) {
-//                                        // Sign in success, update UI with the signed-in user's information
-//                                        FirebaseUser user = mAuth.getCurrentUser();
-//                                        Toast.makeText(getActivity(), "Login ok.", Toast.LENGTH_SHORT).show();
-//                                        Bundle bundle = new Bundle();
-//                                        bundle.putString("UID", user.getUid());
-//                                        Navigation.findNavController(view).navigate(R.id.action_signInFragment_to_frontPageFragment,bundle);
-//                                    } else {
-//                                        // If sign in fails, display a message to the user.
-//                                        Toast.makeText(getActivity(), "Login failed.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            });
-
                     mAuth.signInWithEmailAndPassword(emailStr, passwordStr)
                             .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -125,7 +106,7 @@ public class SignInFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        Toast.makeText(getActivity(), "Login ok.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "You've logged in successfully", Toast.LENGTH_SHORT).show();
                                         Bundle bundle = new Bundle();
                                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                                         DatabaseReference myRef = database.getReference("users").child(user.getUid());
@@ -148,7 +129,7 @@ public class SignInFragment extends Fragment {
 
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Toast.makeText(getActivity(), "Login failed.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "Login failed - please check your email/password", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

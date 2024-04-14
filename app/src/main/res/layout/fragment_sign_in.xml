@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@color/myWhite"
     android:orientation="vertical"
     android:layoutDirection="ltr"
     tools:context=".fragments.SignInFragment" >
@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Email:"
+            android:textColor="#0d1321"
             android:textSize="20sp" />
 
         <EditText
@@ -29,6 +30,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="abc@example.com"
+            android:textColor="#0d1321"
+            android:backgroundTint="#0d1321"
+            android:textColorHint="#6c757d"
             android:inputType="textEmailAddress" />
     </LinearLayout>
 
@@ -45,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
+            android:textColor="#0d1321"
             android:textSize="20sp" />
 
         <EditText
@@ -53,6 +58,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
+            android:textColor="#0d1321"
+            android:backgroundTint="#0d1321"
+            android:textColorHint="#6c757d"
             android:hint="Your password" />
 
     </LinearLayout>
@@ -64,6 +72,9 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="160dp"
         android:layout_marginRight="40dp"
+        android:textColor="#0d1321"
+        android:textSize="18sp"
+        android:background="@drawable/btn_delete_selector"
         android:text="Sign In" />
 
 </LinearLayout>

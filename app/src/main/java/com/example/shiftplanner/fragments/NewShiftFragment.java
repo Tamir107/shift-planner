@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.example.shiftplanner.GoogleCalendarService;
 import com.example.shiftplanner.R;
 import com.example.shiftplanner.models.Shift;
-import com.example.shiftplanner.models.ShiftCount;
 import com.example.shiftplanner.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,7 +54,7 @@ public class NewShiftFragment extends Fragment {
     private TextView date;
     private int hoursID, year, month, day;
     private int yearV2, monthV2, dayV2;
-    private Button addShiftButton,chooseDateButton;
+    private Button addShiftButton, chooseDateButton;
     private RadioButton radioMorning, radioEvening, radioNight;
     private String hoursDescription, formatedDate;
     private SimpleDateFormat simpleDateFormat;
@@ -116,7 +115,6 @@ public class NewShiftFragment extends Fragment {
         String employeeID = getArguments().getString("employeeID");
 
 
-
         chooseDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +139,7 @@ public class NewShiftFragment extends Fragment {
                         date.setText(displayFormat.format(calendar.getTime()));
                         formatedDate = databaseFormat.format(calendar.getTime());
                     }
-                },year,month,day);
+                }, year, month, day);
                 datePickerDialog.show();
             }
         });
@@ -155,56 +153,57 @@ public class NewShiftFragment extends Fragment {
                         hoursID = 0;
                         hoursDescription = "Morning shift: 7:00 AM - 3:00 PM";
                         summary = firstName + " " + lastName + " - Morning";
-                        Toast.makeText(getActivity(), "Morning", Toast.LENGTH_SHORT).show();
                     } else if (radioEvening.isChecked()) {
                         hoursID = 1;
                         hoursDescription = "Evening shift: 3:00 PM - 11:00 PM";
                         summary = firstName + " " + lastName + " - Evening";
-                        Toast.makeText(getActivity(), "Evening", Toast.LENGTH_SHORT).show();
                     } else if (radioNight.isChecked()) {
                         hoursID = 2;
                         hoursDescription = "Night shift: 11:00 PM - 7:00 AM";
                         summary = firstName + " " + lastName + " - Night";
-                        Toast.makeText(getActivity(), "Night", Toast.LENGTH_SHORT).show();
                     } else {
                         // Empty selection
                         throw new Exception("You must choose shift hours");
                     }
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    myRef = database.getReference("shifts").child(UID).child(formatedDate);
-                    myRef.setValue(new Shift(firstName, lastName, employeeID, date.getText().toString(), hoursDescription, hoursID));
-                    Toast.makeText(getActivity(), "Shift added successfully.", Toast.LENGTH_SHORT).show();
-
+                    // For the google calendar api
                     Calendar startCalendar = Calendar.getInstance();
                     Calendar endCalendar = Calendar.getInstance();
 
-                    Log.w("myApp",String.valueOf(dayV2));
-                    switch (hoursID){
+                    switch (hoursID) {
                         case 0:
-                            startCalendar.set(yearV2,monthV2,dayV2,7,0,0);
-                            endCalendar.set(yearV2,monthV2,dayV2,15,0,0);
+                            startCalendar.set(yearV2, monthV2, dayV2, 7, 0, 0);
+                            endCalendar.set(yearV2, monthV2, dayV2, 15, 0, 0);
                             break;
                         case 1:
-                            startCalendar.set(yearV2,monthV2,dayV2,15,0,0);
-                            endCalendar.set(yearV2,monthV2,dayV2,23,0,0);
+                            startCalendar.set(yearV2, monthV2, dayV2, 15, 0, 0);
+                            endCalendar.set(yearV2, monthV2, dayV2, 23, 0, 0);
                             break;
                         case 2:
-                            startCalendar.set(yearV2,monthV2,dayV2,23,0,0);
-                            endCalendar.set(yearV2,monthV2,dayV2+1,7,0,0);
+                            startCalendar.set(yearV2, monthV2, dayV2, 23, 0, 0);
+                            endCalendar.set(yearV2, monthV2, dayV2 + 1, 7, 0, 0);
                             break;
                     }
-                    Log.w("Test",employeeID + date.getText().toString().replaceAll("[/]","") + hoursID);
 
-                    GoogleCalendarService.addEventToCalendar(getContext(),employeeID + date.getText().toString().replaceAll("[/]","") + hoursID,summary,startCalendar.getTime(),endCalendar.getTime());
-
-                    String shiftInfo = String.valueOf(monthV2 + 1);
-                    if (hoursID == 2){
-                        shiftInfo += "night";
+                    String response = GoogleCalendarService.addEventToCalendar(getContext(), employeeID + date.getText().toString().replaceAll("[/]", "") + hoursID, summary, startCalendar.getTime(), endCalendar.getTime());
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    if (response == "") {
+                        myRef = database.getReference("shifts").child(UID).child(formatedDate);
+                        myRef.setValue(new Shift(firstName, lastName, employeeID, date.getText().toString(), hoursDescription, hoursID));
+                        Toast.makeText(getActivity(), "Shift added successfully.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), response + ", failed to add shift", Toast.LENGTH_SHORT).show();
+                        return;
                     }
 
+                    // For the shiftCount in the database
+                    String shiftInfo = date.getText().toString().substring(3, 5);
+                    if (hoursID == 2) {
+                        shiftInfo += "night";
+                    }
                     DatabaseReference countRef = database.getReference("shiftsCount").
                             child(shiftInfo).child(UID).child("count");
+
                     countRef.runTransaction(new Transaction.Handler() {
                         @NonNull
                         @Override
@@ -225,30 +224,17 @@ public class NewShiftFragment extends Fragment {
                                                @Nullable DataSnapshot dataSnapshot) {
                             if (databaseError != null) {
                                 // Handle possible error condition
-                                Log.w("WOW", "Error updating count: " + databaseError.getMessage());
+                                Log.w("myApp", "Error updating count: " + databaseError.getMessage());
                             } else {
-                                Log.w("WOW", "Count updated successfully.");
+                                Log.w("myApp", "Count updated successfully.");
                             }
                         }
                     });
 
 
-
-
-
-
-
-
-
-
-
-
-
                 } catch (Exception error) {
                     Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("myTag", error.getMessage());
                 }
-
             }
         });
 

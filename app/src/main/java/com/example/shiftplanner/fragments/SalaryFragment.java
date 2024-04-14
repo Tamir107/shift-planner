@@ -117,34 +117,34 @@ public class SalaryFragment extends Fragment {
                     textViewMonth1.setText("January");
                     textViewMonth2.setText("February");
                     textViewMonth3.setText("March");
-                    firstMonthPath = "1";
-                    firstMonthNightPath = "1night";
-                    secondMonthPath = "2";
-                    secondMonthNightPath = "2night";
-                    thirdMonthPath = "3";
-                    thirdMonthNightPath = "3night";
+                    firstMonthPath = "01";
+                    firstMonthNightPath = "01night";
+                    secondMonthPath = "02";
+                    secondMonthNightPath = "02night";
+                    thirdMonthPath = "03";
+                    thirdMonthNightPath = "03night";
                 }
                 if (radioQ2.isChecked()){
                     textViewMonth1.setText("April");
                     textViewMonth2.setText("May");
                     textViewMonth3.setText("June");
-                    firstMonthPath = "4";
-                    firstMonthNightPath = "4night";
-                    secondMonthPath = "5";
-                    secondMonthNightPath = "5night";
-                    thirdMonthPath = "6";
-                    thirdMonthNightPath = "6night";
+                    firstMonthPath = "04";
+                    firstMonthNightPath = "04night";
+                    secondMonthPath = "05";
+                    secondMonthNightPath = "05night";
+                    thirdMonthPath = "06";
+                    thirdMonthNightPath = "06night";
                 }
                 if(radioQ3.isChecked()){
                     textViewMonth1.setText("July");
                     textViewMonth2.setText("August");
                     textViewMonth3.setText("September");
-                    firstMonthPath = "7";
-                    firstMonthNightPath = "7night";
-                    secondMonthPath = "8";
-                    secondMonthNightPath = "8night";
-                    thirdMonthPath = "9";
-                    thirdMonthNightPath = "9night";
+                    firstMonthPath = "07";
+                    firstMonthNightPath = "07night";
+                    secondMonthPath = "08";
+                    secondMonthNightPath = "08night";
+                    thirdMonthPath = "09";
+                    thirdMonthNightPath = "09night";
                 }
                 if (radioQ4.isChecked()){
                     textViewMonth1.setText("October");
@@ -158,54 +158,6 @@ public class SalaryFragment extends Fragment {
                     thirdMonthNightPath = "12night";
                 }
 
-
-//                switch (selectedQuarter) {
-//                    case "Q1":
-//                        textViewMonth1.setText("January");
-//                        textViewMonth2.setText("February");
-//                        textViewMonth3.setText("March");
-//                        firstMonthPath = "1";
-//                        firstMonthNightPath = "1night";
-//                        secondMonthPath = "2";
-//                        secondMonthNightPath = "2night";
-//                        thirdMonthPath = "3";
-//                        thirdMonthNightPath = "3night";
-//                        break;
-//                    case "Q2":
-//                        textViewMonth1.setText("April");
-//                        textViewMonth2.setText("May");
-//                        textViewMonth3.setText("June");
-//                        firstMonthPath = "4";
-//                        firstMonthNightPath = "4night";
-//                        secondMonthPath = "5";
-//                        secondMonthNightPath = "5night";
-//                        thirdMonthPath = "6";
-//                        thirdMonthNightPath = "6night";
-//                        break;
-//                    case "Q3":
-//                        textViewMonth1.setText("July");
-//                        textViewMonth2.setText("August");
-//                        textViewMonth3.setText("September");
-//                        firstMonthPath = "7";
-//                        firstMonthNightPath = "7night";
-//                        secondMonthPath = "8";
-//                        secondMonthNightPath = "8night";
-//                        thirdMonthPath = "9";
-//                        thirdMonthNightPath = "9night";
-//                        break;
-//                    case "Q4":
-//                        textViewMonth1.setText("October");
-//                        textViewMonth2.setText("November");
-//                        textViewMonth3.setText("December");
-//                        firstMonthPath = "10";
-//                        firstMonthNightPath = "10night";
-//                        secondMonthPath = "11";
-//                        secondMonthNightPath = "11night";
-//                        thirdMonthPath = "12";
-//                        thirdMonthNightPath = "12night";
-//                        break;
-//                }
-
                 // Initialize Firebase Database reference
                 DatabaseReference database = FirebaseDatabase.getInstance().getReference("shiftsCount");
 
@@ -213,6 +165,7 @@ public class SalaryFragment extends Fragment {
                 Map<String, DataSnapshot> dataSnapshotMap = new HashMap<>();
 
                 // Fetch data from multiple paths in a single call
+                // we want to fetch the database from 6 different places, then we define all the the 6 paths
                 database.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -281,9 +234,10 @@ public class SalaryFragment extends Fragment {
                             textViewNightShifts3.setText("0");
                         }
 
-                        textViewSalary1.setText(String.valueOf((firstMonth * 40) + (firstMonthNight * 60) + "₪"));
-                        textViewSalary2.setText(String.valueOf((secondMonth * 40) + (secondMonthNight * 60) + "₪"));
-                        textViewSalary3.setText(String.valueOf((thirdMonth * 40) + (thirdMonthNight * 60) + "₪"));
+                        // numberOfShifts * 8 hour shift * 40 hourly wage
+                        textViewSalary1.setText(String.valueOf((firstMonth * 8 * 40) + (firstMonthNight * 8 * 60) + "₪"));
+                        textViewSalary2.setText(String.valueOf((secondMonth * 8 * 40) + (secondMonthNight * 8 * 60) + "₪"));
+                        textViewSalary3.setText(String.valueOf((thirdMonth * 8 * 40) + (thirdMonthNight * 8 * 60) + "₪"));
                     }
 
                     @Override

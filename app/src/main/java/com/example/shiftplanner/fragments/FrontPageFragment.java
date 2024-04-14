@@ -94,35 +94,12 @@ public class FrontPageFragment extends Fragment {
         String firstName = getArguments().getString("firstName");
         String lastName = getArguments().getString("lastName");
         String employeeID = getArguments().getString("employeeID");
-        welcomeUser.setText("Hello," + firstName);
+        welcomeUser.setText("Hello, " + firstName);
 
         bundle.putString("UID", UID);
         bundle.putString("firstName", firstName);
         bundle.putString("lastName", lastName);
         bundle.putString("employeeID", employeeID);
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("users").child(UID);
-//        // Read from the database
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                User loggedInUser = dataSnapshot.getValue(User.class);
-//                welcomeUser.append(loggedInUser.getFirstName());
-//                bundle.putString("UID", UID);
-//                bundle.putString("firstName", loggedInUser.getFirstName());
-//                bundle.putString("lastName", loggedInUser.getLastName());
-//                bundle.putString("employeeID", loggedInUser.getEmployeeID());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//            }
-//        });
-
 
         buttonToAddShift.setOnClickListener(new View.OnClickListener() {
             @Override

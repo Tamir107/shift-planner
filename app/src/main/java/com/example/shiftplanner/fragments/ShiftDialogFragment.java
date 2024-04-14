@@ -19,14 +19,19 @@ import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shiftplanner.GoogleCalendarService;
 import com.example.shiftplanner.R;
 import com.example.shiftplanner.models.Shift;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -99,46 +104,62 @@ public class ShiftDialogFragment extends DialogFragment {
         TextView textViewShiftDetails = view.findViewById(R.id.textViewShiftDetails);
 
         // Populate shift details in the dialog
-        String shiftDetails = "Shift Date: " + shift.getDate() + "\n"
-                + "Employee: " + shift.getFirstName() + " " + shift.getLastName();
+        String shiftDetails = "Shift Date: " + shift.getDate() + "\n" + "\n"
+                + "Time: " + shift.getHoursDescription() + "\n" + "\n"
+         + "Employee: " + shift.getFirstName() + " " + shift.getLastName();
         textViewShiftDetails.setText(shiftDetails);
 
-        Button btnEdit = view.findViewById(R.id.btnEdit);
         Button btnDelete = view.findViewById(R.id.btnDelete);
 
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle edit button click
-                // Implement your edit logic here
-                showEditDialog();
-            }
-        });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Handle delete button click
-                // Implement your delete logic here
-                deleteShiftFromDatabase(shift);
-                GoogleCalendarService.removeEventFromCalendar(getContext(), shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
+                String response = GoogleCalendarService.removeEventFromCalendar(getContext(), shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
+                if(response == ""){
+                    deleteShiftFromDatabase(shift);
+                    String shiftInfo = shift.getDate().substring(3,5);
+                    if(shift.getHoursID() == 2){
+                        shiftInfo += "night";
+                    }
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference countRef = database.getReference("shiftsCount").
+                            child(shiftInfo).child(UID).child("count");
+                    countRef.runTransaction(new Transaction.Handler() {
+                        @NonNull
+                        @Override
+                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                            Integer currentValue = mutableData.getValue(Integer.class);
+                            if (currentValue == null) {
+                                // Not possible, should be at least 1.
+                                mutableData.setValue(0);
+                            } else {
+                                // Increment count by 1
+                                mutableData.setValue(currentValue - 1);
+                            }
+                            return Transaction.success(mutableData);
+                        }
+
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, boolean b,
+                                               @Nullable DataSnapshot dataSnapshot) {
+                            if (databaseError != null) {
+                                // Handle possible error condition
+                                Log.w("myApp", "Error updating count: " + databaseError.getMessage());
+                            } else {
+                                Log.w("myApp", "Count updated successfully.");
+                            }
+                        }
+                    });
+
+                    Toast.makeText(getActivity(), "Shift deleted successfully", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(), response + ", failed to delete shift", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
-
-//        // Set up buttons
-//        builder.setView(view)
-//                .setPositiveButton("Edit", (dialogInterface, i) -> {
-//                    // Handle edit button click
-//                    // Implement your edit logic here
-//                })
-//                .setNegativeButton("Delete", (dialogInterface, i) -> {
-//                    // Handle delete button click
-//                    // Implement your delete logic here
-//                    deleteShiftFromDatabase(shift);
-//                    Log.w("Test",shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
-//                    GoogleCalendarService.removeEventFromCalendar(getContext(),shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
-//                });
-
         builder.setView(view);
         return builder.create();
     }
@@ -150,128 +171,9 @@ public class ShiftDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.fragment_shift_dialog, container, false);
     }
 
-    private void showEditDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View editView = inflater.inflate(R.layout.dialog_edit_shift, null);
-        builder.setView(editView);
-
-        // Initialize views in the edit dialog layout
-        DatePicker datePicker = editView.findViewById(R.id.datePicker);
-        RadioGroup radioGroupOptions = editView.findViewById(R.id.radioGroupOptions);
-        RadioButton radioMorning = editView.findViewById(R.id.radioMorning);
-        RadioButton radioEvening = editView.findViewById(R.id.radioEvening);
-        RadioButton radioNight = editView.findViewById(R.id.radioNight);
-        Button btnSubmit = editView.findViewById(R.id.btnSubmit);
-
-        // Pre-fill date picker with existing shift date
-        // Set radio button selection based on existing shift details
-
-        AlertDialog editDialog = builder.create();
-
-        btnSubmit.setOnClickListener(v -> {
-            // Handle submit button click
-
-            if (radioMorning.isChecked()){
-                newHoursID = 0;
-                newHoursDescription = "Morning shift: 7:00 AM - 3:00 PM";
-                summary = shift.getFirstName() + " " + shift.getLastName() + " - Morning";
-            }
-            if (radioEvening.isChecked()){
-                newHoursID = 1;
-                newHoursDescription = "Evening shift: 3:00 PM - 11:00 PM";
-                summary = shift.getFirstName() + " " + shift.getLastName() + " - Evening";
-            }
-            if (radioNight.isChecked()){
-                newHoursID = 2;
-                newHoursDescription = "Night shift: 11:00 PM - 7:00 AM";
-                summary = shift.getFirstName() + " " + shift.getLastName() + " - Night";
-            }
-
-
-
-            String updatedDate = getDateFromDatePicker(datePicker);
-//            getSelectedOptionText(radioGroupOptions.getCheckedRadioButtonId());
-            String formatedDate = updatedDate.replaceAll("[/]","");
-
-            Calendar startCalendar = Calendar.getInstance();
-            Calendar endCalendar = Calendar.getInstance();
-
-            switch (newHoursID){
-                case 0:
-                    startCalendar.set(newYear,newMonth,newDay,7,0,0);
-                    endCalendar.set(newYear,newMonth,newDay,15,0,0);
-                    break;
-                case 1:
-                    startCalendar.set(newYear,newMonth,newDay,15,0,0);
-                    endCalendar.set(newYear,newMonth,newDay,23,0,0);
-                    break;
-                case 2:
-                    startCalendar.set(newYear,newMonth,newDay,23,0,0);
-                    endCalendar.set(newYear,newMonth,newDay+1,7,0,0);
-                    break;
-            }
-
-
-            DatabaseReference myRef;
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            myRef = database.getReference("shifts").child(UID).child(formatedDate);
-
-            //Add the new shift
-            myRef.setValue(new Shift(shift.getFirstName(), shift.getLastName(), shift.getEmployeeID(), updatedDate, newHoursDescription, newHoursID));
-
-            //Delete from calendar here
-//            GoogleCalendarService.removeEventFromCalendar(getContext(), shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID());
-            //Create the new event calendar here
-//            GoogleCalendarService.addEventToCalendar(getContext(),shift.getEmployeeID() + formatedDate + newHoursID,summary,startCalendar.getTime(),endCalendar.getTime());
-
-            GoogleCalendarService.updateEventFromCalendar(getContext(),shift.getEmployeeID() + shift.getDate().replaceAll("[/]","") + shift.getHoursID(),summary,shift.getEmployeeID() + formatedDate + newHoursID,startCalendar.getTime(),endCalendar.getTime());
-            //Delete the old one
-            deleteShiftFromDatabase(shift);
-
-            editDialog.dismiss();
-        });
-
-        editDialog.show();
-    }
-
-    private String getDateFromDatePicker(DatePicker datePicker) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, datePicker.getYear());
-        calendar.set(Calendar.MONTH, datePicker.getMonth());
-        calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
-
-        newDay = datePicker.getDayOfMonth();
-        newMonth = datePicker.getMonth(); // Month is 0-based
-        newYear = datePicker.getYear();
-
-        String dateFormatDisplay = "dd/MM/yyyy"; // Change this if you want a different date format
-        SimpleDateFormat displayFormat = new SimpleDateFormat(dateFormatDisplay, Locale.getDefault());
-        return displayFormat.format(calendar.getTime());
-    }
-
-
-//    private void getSelectedOptionText(int selectedOptionId) {
-//        switch (selectedOptionId) {
-//            case R.id.radioMorning:
-//                newHoursID = 0;
-//                newHoursDescription = "Morning shift: 7:00 AM - 3:00 PM";
-//                break;
-//            case R.id.radioEvening:
-//                newHoursID = 1;
-//                newHoursDescription = "Evening shift: 3:00 PM - 11:00 PM";
-//                break;
-//            case R.id.radioNight:
-//                newHoursID = 2;
-//                newHoursDescription = "Night shift: 11:00 PM - 7:00 AM";
-//                break;
-//        }
-//    }
-
     private void deleteShiftFromDatabase(Shift shift) {
         // Get database reference
         String shiftID = shift.getDate().replaceAll("[/]","");
-        Log.w("MyApp","The updated shiftID is: " + shiftID);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                 .getReference("shifts")
                 .child(UID) // Assuming you have a userId field in Shift model
